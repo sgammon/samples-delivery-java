@@ -1,0 +1,42 @@
+{
+  "tasks": [
+    {"uuid": "9f9b2efd-2663-4c69-90e0-006b2dd3c631", "location": {"uuid": "01255ee2-2c30-42a7-85e6-f84d95e0b7da", "label": "AT&T Park", "geopoint": {"latitude": -122.6941400, "longitude": 37.7272391}}},
+    {"uuid": "7e7b5490-f942-4781-9158-82ad47814045", "location": {"uuid": "382f8057-6c43-4702-aa35-b20ee73888e4", "label": "OnFleet HQ", "geopoint": {"latitude": -122.408394, "longitude": 37.783657}}},
+    {"uuid": "22eb3260-5bd0-426c-b06f-4ac4321ada98", "location": {"uuid": "a6900770-2311-4f44-bd88-568690d7595b", "label": "US Capitol", "geopoint": {"latitude": -77.00592, "longitude": 38.889812}}},
+    {"uuid": "3dc36338-b56a-404f-9c99-b563229e6eb3", "location": {"uuid": "64bb15b7-1ee4-45d8-8c6c-fc0374577535", "label": "CA Capitol", "geopoint": {"latitude": -121.494995, "longitude": 38.576763}}},
+    {"uuid": "bb6ed987-4896-4766-9204-bbd721b454ba", "location": {"uuid": "b8a185d6-ca11-4cbc-bd0b-8e31520d4d78", "label": "Apple Store (Union Square)", "geopoint": {"latitude": -122.40636, "longitude": 37.78856}}},
+    {"uuid": "659e4992-461d-4ab6-8c4c-b866a674d697", "location": {"uuid": "dba44369-92cb-4f81-b141-c4e46f9be778", "label": "Apple Store (Chestnut)", "geopoint": {"latitude": -122.43835, "longitude": 37.800545}}},
+    {"uuid": "5f3a160c-1e39-4d21-9ca7-bc18e3f30a38", "location": {"uuid": "d285692b-962a-47e4-929f-bd2c04940cdd", "label": "Apple Store (Stonestown)", "geopoint": {"latitude": -122.4756, "longitude": 37.72816}}},
+    {"uuid": "c4c4f7c3-48eb-4e2f-9fa4-c3a8b6210c6c", "location": {"uuid": "60afa71b-ed42-4359-af8a-429b9ec86765", "label": "Apple Store (Burlingame)", "geopoint": {"latitude": -122.34719, "longitude": 37.578472}}},
+    {"uuid": "70f3e286-b073-4104-8775-e24bd9eec34b", "location": {"uuid": "b57ffd0e-4acc-40bc-ad7c-b70606f959d1", "label": "Apple Store (Stanford)", "geopoint": {"latitude": -122.17233, "longitude": 37.443787}}},
+    {"uuid": "d0280305-a5e8-48ec-aee5-08f8638f5ee7", "location": {"uuid": "d9ac6e86-103f-44b5-9317-b3b8548173bc", "label": "Apple Store (Los Gatos)", "geopoint": {"latitude":  -121.98355, "longitude": 37.223213}}},
+    {"uuid": "55a7f447-4d2f-4379-9965-56ae4a8336ba", "location": {"uuid": "114b3366-2492-402e-b486-368f8cd61cc9", "label": "Apple Store (Walnut Creek)", "geopoint": {"latitude": -122.05993, "longitude": 37.897015}}}
+  ],
+  "drivers": [
+    {"uuid": "ed01d72e-02f8-4ba3-be22-d00fe19b3632", "name": "Bill Withers"},
+    {"uuid": "917c73ad-09ff-4989-af6f-788841e95b44", "name": "Sam Gammon"},
+    {"uuid": "5d508001-4ed6-49ae-91ab-aaa5078a498c", "name": "Kyle Vandagriff"},
+    {"uuid": "96453468-e517-4e78-9125-71e3d19467f4", "name": "Tyler Porras"},
+    {"uuid": "a503146a-3b96-4102-b6bd-bccb7f4b17be", "name": "Randy Stevens"}
+  ],
+  "names": {
+    "first": [
+      "John",
+      "Sally",
+      "Bill",
+      "Sam",
+      "Kyle",
+      "Tyler",
+      "Randy"
+    ],
+    "last": [
+      "Doe",
+      "Sample",
+      "Withers",
+      "Gammon",
+      "Vandagriff",
+      "Porras",
+      "Stevens"
+    ]
+  }
+}
