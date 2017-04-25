@@ -82,13 +82,11 @@ public final class DatasetSpec {
   @Override
   public boolean equals(Object obj) {
     if (obj instanceof DatasetSpec) {
-      final DatasetSpec other = (DatasetSpec)obj;
-      if (other.isRandom() || this.isRandom())
-        return false;  // one or the other is randomly-generated
+      final DatasetSpec other = (DatasetSpec) obj;
 
-      // `isRandom`, above, checks `name` for `null` for us
-      //noinspection ConstantConditions
-      return other.getName().equals(this.getName());
+      // if either name is null, one is a generated dataset, and they're not equal
+      return !(other.getName() == null || this.getName() == null)
+               && other.getName().equals(this.getName());
     }
     return false;  // not equal: not even the same types
   }
@@ -100,9 +98,7 @@ public final class DatasetSpec {
    */
   @Override
   public int hashCode() {
-    if (!this.isRandom())
-      // `isRandom`, above, checks `name` for `null` for us
-      //noinspection ConstantConditions
+    if (this.getName() != null)
       return this.getName().hashCode();
     return super.hashCode();
   }

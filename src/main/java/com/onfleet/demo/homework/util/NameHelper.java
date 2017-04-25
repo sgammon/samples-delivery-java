@@ -7,6 +7,7 @@ import javax.annotation.concurrent.Immutable;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.*;
 
 
@@ -15,23 +16,19 @@ import java.util.*;
  */
 @Immutable
 @SuppressWarnings({"unused", "WeakerAccess"})
-public final class NameHelper implements Iterator<String> {
+public final class NameHelper implements Serializable, Iterator<String> {
   // -- internals -- //
+  public final static long serialVersionUID = 1L;
+
   /**
    * Filename for a dataset of first names.
    */
-  final @NotNull static String firstNameFile;
+  final transient @NotNull static String firstNameFile;
 
   /**
    * Filename for a dataset of last names.
    */
-  final @NotNull static String lastNameFile;
-
-  static {
-    // -- load config details for embedded name data, build random generator
-    firstNameFile = System.getProperty("sample.name-data.firstnames", "firstnames.txt");
-    lastNameFile = System.getProperty("sample.name-data.lastnames", "surnames.txt");
-  }
+  final transient @NotNull static String lastNameFile;
 
   /**
    * Set of first names that we can pull from.
@@ -46,12 +43,18 @@ public final class NameHelper implements Iterator<String> {
   /**
    * Cache the number of available first names.
    */
-  @NotNull int numberOfFirstNames;
+  final transient int numberOfFirstNames;
 
   /**
    * Cache the number of available last names.
    */
-  @NotNull int numberOfLastNames;
+  final transient int numberOfLastNames;
+
+  static {
+    // -- load config details for embedded name data, build random generator
+    firstNameFile = System.getProperty("sample.name-data.firstnames", "firstnames.txt");
+    lastNameFile = System.getProperty("sample.name-data.lastnames", "surnames.txt");
+  }
 
   // -- constructor -- //
   /**

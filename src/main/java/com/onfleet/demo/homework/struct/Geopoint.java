@@ -16,7 +16,7 @@ import java.io.Serializable;
 @SuppressWarnings("WeakerAccess")
 public final class Geopoint implements Serializable {
   // -- internals -- //
-  final static long serialVersionUID = 1L;
+  public final static long serialVersionUID = 1L;
 
   /**
    * Latitude value.
@@ -59,12 +59,21 @@ public final class Geopoint implements Serializable {
   public boolean equals(final Object otherObject) {
     if (otherObject instanceof Geopoint) {
       final Geopoint other = (Geopoint)otherObject;
-      if (other.getLatitude().equals(latitude)
-          && other.getLongitude().equals(longitude))
-        return true;  // points match
-      return false;
+      return other.getLatitude().equals(latitude)
+             && other.getLongitude().equals(longitude);
     }
     return false;  // not even a geo-point
+  }
+
+  /**
+   * Override this object's hash code as the code of the pair of points, as a
+   * string.
+   *
+   * @return Hash code for this {@link Geopoint} object.
+   */
+  @Override
+  public int hashCode() {
+    return this.toString().hashCode();
   }
 
   /**

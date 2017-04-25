@@ -5,6 +5,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 
@@ -26,7 +27,7 @@ public final class FileUtil {
 
     // load embedded file data w/the Java file read dance
     try(final InputStream is = this.getClass().getClassLoader().getResourceAsStream(path)) {
-      try(final InputStreamReader isr = new InputStreamReader(is)) {
+      try(final InputStreamReader isr = new InputStreamReader(is, StandardCharsets.UTF_8)) {
         try (final BufferedReader br = new BufferedReader(isr)) {
           String line;
 

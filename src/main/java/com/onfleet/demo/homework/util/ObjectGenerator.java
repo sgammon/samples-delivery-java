@@ -23,6 +23,34 @@ import java.util.Map;
  */
 @SuppressWarnings({"WeakerAccess", "UtilityClassCanBeEnum", "UtilityClass", "NullableProblems"})
 final public class ObjectGenerator {
+  // -- internals -- //
+  /**
+   * Filename for a dataset of first names.
+   */
+  final @NotNull static String geoBoundsFile;
+
+  /**
+   * Cached boundary {@link Polygon} for generating {@link com.onfleet.demo.homework.struct.Geopoint} objects.
+   */
+  static @NotNull Polygon boundaryPolygon;
+
+  /**
+   * Name of the geo boundary we're enforcing.
+   */
+  static @NotNull String boundaryName;
+
+  /**
+   * Cached array of boundary watermark values, organized clockwise from the top left - i.e.
+   * top left, top right, bottom right, and bottom left.
+   */
+  static @NotNull Watermarks geopointWatermarks;
+
+  static {
+    // load geo-bounds from JSON
+    geoBoundsFile = System.getProperty("sample.geo-data.boundaries", "bounds.json");
+    loadGeoJSONBoundaries();
+  }
+
   // -- embedded classes -- //
   @Immutable
   final static class Watermarks {
@@ -94,34 +122,6 @@ final public class ObjectGenerator {
   }
 
   /**
-   * Filename for a dataset of first names.
-   */
-  final @NotNull static String geoBoundsFile;
-
-  /**
-   * Cached boundary {@link Polygon} for generating {@link com.onfleet.demo.homework.struct.Geopoint} objects.
-   */
-  static @NotNull Polygon boundaryPolygon;
-
-  /**
-   * Name of the geo boundary we're enforcing.
-   */
-  static @NotNull String boundaryName;
-
-  /**
-   * Cached array of boundary watermark values, organized clockwise from the top left - i.e.
-   * top left, top right, bottom right, and bottom left.
-   */
-  static @NotNull Watermarks geopointWatermarks;
-
-  static {
-    // load geo-bounds from JSON
-    geoBoundsFile = System.getProperty("sample.geo-data.boundaries", "bounds.json");
-    loadGeoJSONBoundaries();
-  }
-
-  // -- internals -- //
-  /**
    * Generate a random location within a given set of boundaries.
    *
    * @return Random Location.
@@ -155,7 +155,7 @@ final public class ObjectGenerator {
       geoJSON = new FileUtil().fileContentsFromJARAsString(geoBoundsFile);
       decodedJSON = new ObjectMapper().readerFor(HashMap.class).readValue(geoJSON);
     } catch (final IOException e) {
-      throw new RuntimeException(e);  // known to exist, would never do this in prod
+      throw new IllegalStateException(e);  // known to exist, would never do this in prod
     }
 
     // label in GeoJSON is specified in "features"->0->properties->name

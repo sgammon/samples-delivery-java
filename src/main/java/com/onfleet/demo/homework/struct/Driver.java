@@ -20,17 +20,17 @@ import java.util.UUID;
 @SuppressWarnings("WeakerAccess")
 public final class Driver implements Serializable {
   // -- internals -- //
-  final static long serialVersionUID = 1L;
+  public final static long serialVersionUID = 1L;
 
   /**
    * UUID for the driver.
    */
-  @NotNull String uuid;
+  final @NotNull String uuid;
 
   /**
    * Name for the driver.
    */
-  @Nullable String name;
+  final @Nullable String name;
 
   // -- constructor -- //
   /**
