@@ -1,0 +1,42 @@
+engines:
+  pmd:
+    enabled: true
+    channel: "beta"
+  checkstyle:
+    enabled: true
+    channel: "beta"
+    checks:
+      com.puppycrawl.tools.checkstyle.checks.naming.MethodNameCheck:
+        enabled: false
+      com.puppycrawl.tools.checkstyle.checks.sizes.LineLengthCheck:
+        enabled: false
+      com.puppycrawl.tools.checkstyle.checks.imports.CustomImportOrderCheck:
+        enabled: false
+      com.puppycrawl.tools.checkstyle.checks.imports.AvoidStarImportCheck:
+        enabled: false
+      com.puppycrawl.tools.checkstyle.checks.blocks.NeedBracesCheck:
+        enabled: false
+      com.puppycrawl.tools.checkstyle.checks.naming.AbbreviationAsWordInNameCheck:
+        enabled: false
+      com.puppycrawl.tools.checkstyle.checks.modifier.ModifierOrderCheck:
+        enabled: false
+      com.puppycrawl.tools.checkstyle.checks.blocks.RightCurlyCheck:
+        enabled: false
+      com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocTagContinuationIndentationCheck:
+        enabled: false
+      com.puppycrawl.tools.checkstyle.checks.naming.LocalVariableNameCheck:
+        enabled: false
+      com.puppycrawl.tools.checkstyle.checks.annotation.AnnotationLocationCheck:
+        enabled: false
+      com.puppycrawl.tools.checkstyle.checks.javadoc.JavadocMethodCheck:
+        enabled: false
+  fixme:
+    enabled: true
+ratings:
+  paths:
+  - "**.java"
+exclude_paths:
+- "src/test/**/*"
+- "homework.ipr"
+- "homework.iws"
+- "homework.pro"
