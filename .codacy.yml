@@ -1,0 +1,24 @@
+---
+engines:
+ duplication:
+   enabled: true
+   exclude_paths:
+     - src/test/**/*.java
+ coverage:
+   enabled: true
+   exclude_paths:
+     - src/test/**/*.java
+ pmd:
+   enabled: true
+   exclude_paths:
+     - src/test/**/*.java
+languages:
+  java:
+    extensions:
+      - src/test/**/*.java
+exclude_paths:
+  - homework.ipr
+  - homework.iws
+  - homework.pro
+  - src/test/**/*.*
+

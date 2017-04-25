@@ -115,7 +115,7 @@ public final class SampleDataset implements Serializable {
                                nameHelper);
     } catch (final IOException e) {
       // throw as runtime exception (would NOT do this in production)
-      throw new RuntimeException(e);
+      throw new IllegalStateException(e);
     }
   }
 

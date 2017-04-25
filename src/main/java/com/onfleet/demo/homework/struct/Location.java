@@ -19,7 +19,7 @@ import java.util.UUID;
 @SuppressWarnings("WeakerAccess")
 public final class Location implements Serializable {
   // -- internals -- //
-  final static long serialVersionUID = 1L;
+  public final static long serialVersionUID = 1L;
 
   /**
    * UUID for the location.
@@ -50,7 +50,7 @@ public final class Location implements Serializable {
                   final @JsonProperty("geopoint") @NotNull Geopoint geopoint) {
     //noinspection ConstantConditions
     if (geopoint == null)
-      throw new NullPointerException("`geopoint` was found to be null.");
+      throw new IllegalArgumentException("`geopoint` was found to be null.");
     this.uuid = uuid;
     this.label = label;
     this.geopoint = geopoint;

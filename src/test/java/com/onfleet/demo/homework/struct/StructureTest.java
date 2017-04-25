@@ -63,7 +63,7 @@ public final class StructureTest extends FixturedTest {
     final Location sampleLocation = Location.factory("OnFleet HQ", new Geopoint(-122.408394, null));
   }
 
-  @Test(expected=NullPointerException.class)
+  @Test(expected=IllegalArgumentException.class)
   public void testNullGeopoint() {
     //noinspection ConstantConditions
     final Location sampleLocation = Location.factory("OnFleet HQ", null);
@@ -97,7 +97,7 @@ public final class StructureTest extends FixturedTest {
 
   @Test
   public void testTaskObjectFromJSON() throws IOException {
-    final String taskSample = "{\"uuid\": \"7e7b5490-f942-4781-9158-82ad47814045\", \"location\": {\"label\": \"OnFleet HQ\", \"geopoint\": {\"latitude\": -122.408394, \"longitude\": 37.783657}}}";
+    final String taskSample = "{\"uuid\": \"7e7b5490-f942-4781-9158-82ad47814045\", \"location\": {\"uuid\": \"7e7b5490-f942-4781-9158-82ad47814045\", \"label\": \"OnFleet HQ\", \"geopoint\": {\"latitude\": -122.408394, \"longitude\": 37.783657}}}";
     this.objectMapper().readerFor(Task.class).readValue(taskSample);
   }
 }
