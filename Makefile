@@ -13,6 +13,10 @@ GOAL ?= package
 SURNAMES_FILE ?= https://raw.githubusercontent.com/enorvelle/NameDatabases/master/NamesDatabases/surnames/us.txt
 FIRSTNAMES_FILE ?= https://raw.githubusercontent.com/enorvelle/NameDatabases/master/NamesDatabases/first%20names/us.txt
 GEOJSON_BOUNDS ?= https://raw.githubusercontent.com/johan/world.geo.json/master/countries/USA/CA/San%20Francisco.geo.json
+
+CODACY_API_TOKEN = naUJkcQpwRBDgJq8ooAU
+CODACY_PROJECT_TOKEN = ed03e263fbff44d78353201a4f5cf840
+
 CODACY_COMMAND ?= com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/site/jacoco/jacoco.xml \
     -DprojectToken=$(CODACY_PROJECT_TOKEN) \
     -DapiToken=$(CODACY_API_TOKEN)

@@ -9,3 +9,4 @@ jdk:
   - oraclejdk8
 
 script: make TESTS=0 && make release install
+
