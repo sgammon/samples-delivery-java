@@ -82,4 +82,4 @@ Improve the approach to scale sub-linearly with the number of total possible ass
 - Name data from [enorvelle/NameDatabases](https://github.com/enorvelle/NameDatabases)
 - GeoJSON bounds from [johan/world.geo.json](https://github.com/johan/world.geo.json)
 
-[https://d1er272rpp2pqg.cloudfront.net/d54c2859/app/images/home/section-hero-logo.svg]
+![∞](https://d1er272rpp2pqg.cloudfront.net/d54c2859/app/images/home/section-hero-logo.svg "∞")
