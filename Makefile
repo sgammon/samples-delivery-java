@@ -13,12 +13,17 @@ GOAL ?= package
 SURNAMES_FILE ?= https://raw.githubusercontent.com/enorvelle/NameDatabases/master/NamesDatabases/surnames/us.txt
 FIRSTNAMES_FILE ?= https://raw.githubusercontent.com/enorvelle/NameDatabases/master/NamesDatabases/first%20names/us.txt
 GEOJSON_BOUNDS ?= https://raw.githubusercontent.com/johan/world.geo.json/master/countries/USA/CA/San%20Francisco.geo.json
+CODACY_COMMAND ?= com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFile=target/site/jacoco/jacoco.xml \
+    -DprojectToken=$(CODACY_PROJECT_TOKEN) \
+    -DapiToken=$(CODACY_API_TOKEN)
 
 
 # -- Do not modify below this line
 
 MAVEN = $(shell which mvn)
 JAVA_PACKAGE = com.onfleet.demo.homework
+STATIC_ANALYSIS_GOALS = pmd:pmd findbugs:findbugs
+REPORTING_GOALS = jacoco:report
 
 # use java package to calculate M2 path,
 # see: https://www.gnu.org/software/make/manual/html_node/Text-Functions.html
@@ -40,6 +45,11 @@ dependencies: $(LOCAL_ENV)  ## Install build tools.
 install:  ## Build and install the OnFleet Homework code into the local Maven environment.
 	@echo "Installing OnFleet Homework tool..."
 	@mvn clean install $(MVN_OPTS)
+
+release: clean install  ## Perform a full clean-build-report flow.
+	@echo "Running reporting tools for Java..."
+	@mvn $(STATIC_ANALYSIS_GOALS) $(REPORTING_GOALS)
+	@mvn $(CODACY_COMMAND)
 
 build: $(TARGET)  ## Build the OnFleet Homework code sample for Java.
 	@echo "Build complete."

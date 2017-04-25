@@ -1,4 +1,8 @@
 # Task Dispatch: Java Code Sample
+[![Build Status](https://buildbot.hq.mm-corp.systems/jenkins/buildStatus/icon?job=Sam/samples-delivery-java)](https://buildbot.hq.mm-corp.systems/jenkins/job/Sam/samples-delivery-java)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/ccfa5c3038464d708051888e1cf45311)](https://www.codacy.com/app/samuel-gammon/samples-delivery-java?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sgammon/samples-delivery-java&amp;utm_campaign=Badge_Grade)
+[![Code Climate](https://codeclimate.com/github/sgammon/samples-delivery-java.png)](https://codeclimate.com/github/sgammon/samples-delivery-java)
+
 ∞ OnFleet // @sgammon
 
 ## Overview

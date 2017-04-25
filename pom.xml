@@ -401,6 +401,11 @@
                 <artifactId>maven-pmd-plugin</artifactId>
                 <version>${maven.pmd-plugin.version}</version>
             </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${maven.jacoco.version}</version>
+            </plugin>
         </plugins>
     </reporting>
 </project>
