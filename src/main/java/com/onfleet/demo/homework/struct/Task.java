@@ -20,7 +20,7 @@ import java.util.UUID;
 @SuppressWarnings("WeakerAccess")
 public class Task implements Serializable {
   // -- internals -- //
-  final static long serialVersionUID = 1L;
+  public final static long serialVersionUID = 1L;
 
   /**
    * UUID for the task.

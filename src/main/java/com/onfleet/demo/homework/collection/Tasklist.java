@@ -63,7 +63,7 @@ public final class Tasklist {
   public void assignTask(final @NotNull Task task) {
     //noinspection ConstantConditions
     if (task == null)
-      throw new NullPointerException("Cannot assign `null` Task record.");
+      throw new IllegalArgumentException("Cannot assign `null` Task record.");
     this.assignedTasks.add(task);
   }
 

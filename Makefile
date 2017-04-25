@@ -46,6 +46,11 @@ all: help build  ## Install dependencies and build.
 
 dependencies: $(LOCAL_ENV)  ## Install build tools.
 
+docs: build  ## Build Javadocs and update the 'docs/' folder.
+	@echo "Updating docs..."
+	@cp -frv target/apidocs-private/apidocs/* docs/
+	@echo "Docs updated."
+
 install:  ## Build and install the OnFleet Homework code into the local Maven environment.
 	@echo "Installing OnFleet Homework tool..."
 	@mvn clean install $(MVN_OPTS)
