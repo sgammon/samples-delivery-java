@@ -2,6 +2,7 @@ package com.onfleet.demo.homework.util;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.onfleet.demo.homework.cli.AppLogger;
 import com.onfleet.demo.homework.struct.Driver;
 import com.onfleet.demo.homework.struct.Geopoint;
 import com.onfleet.demo.homework.struct.Location;
@@ -132,6 +133,8 @@ final public class ObjectGenerator {
   static @NotNull Geopoint randomLocationWithinBounds() {
     // quick and dirty algorithm to generate roughly within the points
     final Random randomGenerator = RandomNumberUtil.getRandomGenerator();
+
+    // @TODO: cache these
     final double morePreciseLowLatitude = geopointWatermarks.getLatitudeLowMark() * Watermarks.precisionMultiple;
     final double morePreciseLowLongitude = geopointWatermarks.getLongitudeLowMark() * Watermarks.precisionMultiple;
     final double morePreciseHiLatitude = geopointWatermarks.getLatitudeHiMark() * Watermarks.precisionMultiple;
@@ -167,6 +170,7 @@ final public class ObjectGenerator {
    */
   public @NotNull static Location generateLocation() {
     final Geopoint randomGeopoint = randomLocationWithinBounds();
+    AppLogger.verbose("NameHelper", "Generated random geopoint " + randomGeopoint.toString() + "...");
     return Location.factory(randomGeopoint);
   }
 
@@ -177,6 +181,8 @@ final public class ObjectGenerator {
    */
   @SuppressWarnings({"unchecked", "TypeMayBeWeakened", "ConstantConditions"})
   static void loadGeoJSONBoundaries() {
+    AppLogger.say("NameHelper", "Loading GeoJSON boundaries...");
+
     // decode JSON into raw map
     final String geoJSON;
     final Map<String, Object> decodedJSON;
@@ -252,7 +258,10 @@ final public class ObjectGenerator {
    * @return Task object, randomly generated.
    */
   public @NotNull static Task generateTask() {
-    return Task.factory(generateLocation());
+    final Location location = generateLocation();
+    final Task task = Task.factory(location);
+    AppLogger.verbose("NameHelper", "Generated random task with UUID '" + task.getUuid() + "'...");
+    return task;
   }
 
   /**
@@ -271,6 +280,8 @@ final public class ObjectGenerator {
    * @return Driver object, with a randomly-generated name.
    */
   public @NotNull static Driver generateDriver(final NameHelper helper) {
-    return Driver.factory(helper.generateName());
+    final String name = helper.generateName();
+    AppLogger.verbose("NameHelper", "Generated driver '" + name + "'...");
+    return Driver.factory(name);
   }
 }

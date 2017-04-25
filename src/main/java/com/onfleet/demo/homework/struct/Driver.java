@@ -46,6 +46,39 @@ public final class Driver implements Serializable {
     this.name = name;
   }
 
+  // -- public API -- //
+  /**
+   * Overridden <pre>equals</pre> method for two {@link Driver} objects.
+   *
+   * @param other Other object to compare.
+   * @return Whether the two should be considered equal or not.
+   */
+  @Override
+  public boolean equals(final Object other) {
+    return other instanceof Driver && this.hashCode() == other.hashCode();
+  }
+
+  /**
+   * Return the hash code for the underlying {@link Driver}'s UUID.
+   *
+   * @return Hash code for this {@link Driver}'s UUID.
+   */
+  @Override
+  public int hashCode() {
+    return this.uuid.hashCode();
+  }
+
+  /**
+   * Use the driver's name as their string value.
+   *
+   * @return Driver's name.
+   */
+  @Override
+  public String toString() {
+    return this.name;
+  }
+
+
   // -- static API -- //
   /**
    * Construct a new Driver object, with a random UUID specifying

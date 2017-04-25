@@ -19,17 +19,17 @@ public final class DatasetSpec {
   /**
    * Default number of drivers.
    */
-  public final static int defaultNumberOfDrivers = 25;
+  public final static int defaultNumberOfDrivers = 50;
 
   /**
    * Default average number of tasks per driver.
    */
-  public final static int defaultTasksPerDriver = 5;
+  public final static int defaultTasksPerDriver = 25;
 
   /**
    * Default variance in tasks per driver.
    */
-  public final static int defaultVarianceInTasksPerDriver = 2;
+  public final static int defaultVarianceInTasksPerDriver = 5;
 
   // -- internals -- //
   /**

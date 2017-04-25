@@ -83,14 +83,14 @@ public final class Geopoint implements Serializable {
    */
   @Override
   public String toString() {
-    return "Point(" + String.valueOf(latitude) + ", " + String.valueOf(longitude) + ")";
+    return "Point(" + String.format("%.8g", latitude) + ", " + String.format("%.8g", longitude) + ")";
   }
 
   // -- getters -- //
   /**
    * @return Retrieve the geopoint value for this point.
    */
-  @NotNull @JsonProperty("longitude")
+  @NotNull @JsonProperty("latitude")
   public Double getLatitude() {
     return latitude;
   }

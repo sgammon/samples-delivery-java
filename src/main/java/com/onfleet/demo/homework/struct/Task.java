@@ -48,7 +48,7 @@ public class Task implements Serializable {
 
   // -- static API -- //
   /**
-   * Construct a new Driver object, generating a random UUID to use
+   * Construct a new Task object, generating a random UUID to use
    * as the unique ID for the object.
    *
    * @param location Location describing the task.
