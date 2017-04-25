@@ -3,8 +3,11 @@ package com.onfleet.demo.homework.util;
 
 import com.onfleet.demo.homework.FixturedTest;
 import com.onfleet.demo.homework.struct.Driver;
+import com.onfleet.demo.homework.struct.Location;
+import com.onfleet.demo.homework.struct.Task;
 import org.junit.Test;
 
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
@@ -34,11 +37,19 @@ public class ObjectGeneratorTest extends FixturedTest {
 
   @Test
   public void testGenerateLocation() {
-
+    final Location newLocation = ObjectGenerator.generateLocation();
+    assertNotNull("generated location must not be null", newLocation);
+    assertNotNull("generated location should have a non-null UUID", newLocation.getUuid());
+    assertNotNull("generated location should have a non-null geopoint", newLocation.getGeopoint());
+    assertNotEquals("generated location geopoint should have a nonzero latitude", newLocation.getGeopoint().getLatitude(), 0.0);
+    assertNotEquals("generated location geopoint should have a nonzero longitude", newLocation.getGeopoint().getLongitude(), 0.0);
   }
 
   @Test
   public void testGenerateTask() {
-
+    final Task newTask = ObjectGenerator.generateTask();
+    assertNotNull("generated task must not be null", newTask);
+    assertNotNull("generated task must have a non-null UUID", newTask.getUuid());
+    assertNotNull("generated task must have a non-null location", newTask.getLocation());
   }
 }

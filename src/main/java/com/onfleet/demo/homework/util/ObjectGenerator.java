@@ -11,10 +11,8 @@ import org.jetbrains.annotations.NotNull;
 
 import java.awt.*;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 import java.util.List;
-import java.util.Map;
 
 
 /**
@@ -54,6 +52,11 @@ final public class ObjectGenerator {
   // -- embedded classes -- //
   @Immutable
   final static class Watermarks {
+    /**
+     * Precision multiplier when generating points.
+     */
+    private static final double precisionMultiple = 1000.0;
+
     /**
      * Latitude value.
      */
@@ -127,7 +130,33 @@ final public class ObjectGenerator {
    * @return Random Location.
    */
   static @NotNull Geopoint randomLocationWithinBounds() {
-    return new Geopoint(0.0, 0.0);  // @TODO: real code
+    // quick and dirty algorithm to generate roughly within the points
+    final Random randomGenerator = RandomNumberUtil.getRandomGenerator();
+    final double morePreciseLowLatitude = geopointWatermarks.getLatitudeLowMark() * Watermarks.precisionMultiple;
+    final double morePreciseLowLongitude = geopointWatermarks.getLongitudeLowMark() * Watermarks.precisionMultiple;
+    final double morePreciseHiLatitude = geopointWatermarks.getLatitudeHiMark() * Watermarks.precisionMultiple;
+    final double morePreciseHiLongitude = geopointWatermarks.getLongitudeHiMark() * Watermarks.precisionMultiple;
+
+    double xValue = Math.abs(morePreciseLowLatitude) + randomGenerator.nextInt(Math.abs((int)morePreciseHiLatitude / 100));
+    double yValue = Math.abs(morePreciseLowLongitude) + randomGenerator.nextInt(Math.abs((int)morePreciseHiLongitude / 100));
+
+    // rein in above-max values by reducing them by (up to 80% of the total spillage over-max plus the spillage)
+    if (Math.abs(xValue) > Math.abs(morePreciseHiLatitude))
+      xValue -= ((Math.abs(xValue) - Math.abs(morePreciseHiLatitude))
+                  + (((double)randomGenerator.nextInt(80)) / 100.0) * (Math.abs(xValue) - Math.abs(morePreciseHiLatitude)));
+    if (Math.abs(yValue) > Math.abs(morePreciseHiLongitude))
+      yValue -= (Math.abs(yValue) - Math.abs(morePreciseHiLongitude))
+                  + (((double)randomGenerator.nextInt(80)) / 100.0) * (Math.abs(yValue) - Math.abs(morePreciseHiLongitude));
+
+    xValue /= Watermarks.precisionMultiple;
+    yValue /= Watermarks.precisionMultiple;
+
+    if (morePreciseLowLatitude < 0.0)
+      xValue = 0.0 - xValue;
+    if (morePreciseLowLongitude < 0.0)
+      yValue = 0.0 - yValue;
+
+    return new Geopoint(xValue, yValue);
   }
 
   // -- object generators -- //
@@ -180,29 +209,29 @@ final public class ObjectGenerator {
 
     for (List innerCoordinate : coordinatesArray) {
       // extract coordinates
-      final Double latitude = (Double)innerCoordinate.get(0);
-      final Double longitude = (Double)innerCoordinate.get(1);
+      final Double latitude = (Double)innerCoordinate.get(1);
+      final Double longitude = (Double)innerCoordinate.get(0);
 
       // calculate bounds for latitude
       if (latitudeLowBound.equals(0.0))
         latitudeLowBound = latitude;
-      else if (latitudeLowBound > latitude)
+      else if (Math.abs(latitudeLowBound) > Math.abs(latitude))
         latitudeLowBound = latitude;
 
       if (latitudeHiBound.equals(0.0))
         latitudeHiBound = latitude;
-      else if (latitudeHiBound < latitude)
+      else if (Math.abs(latitudeHiBound) < Math.abs(latitude))
         latitudeHiBound = latitude;
 
       // calculate bounds for longitude
       if (longitudeLowBound.equals(0.0))
         longitudeLowBound = longitude;
-      else if (longitudeLowBound > longitude)
+      else if (Math.abs(longitudeLowBound) > Math.abs(longitude))
         longitudeLowBound = longitude;
 
       if (longitudeHiBound.equals(0.0))
         longitudeHiBound = longitude;
-      else if (latitudeHiBound < longitude)
+      else if (Math.abs(longitudeHiBound) < Math.abs(longitude))
         longitudeHiBound = longitude;
 
       polygon.addPoint(latitude.intValue(),

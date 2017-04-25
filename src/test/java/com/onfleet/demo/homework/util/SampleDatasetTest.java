@@ -1,7 +1,6 @@
 package com.onfleet.demo.homework.util;
 
 
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -15,7 +14,6 @@ import static org.junit.Assert.assertNotNull;
  */
 public final class SampleDatasetTest {
   @Test
-  @Ignore
   public void testGenerate() {
     final SampleDataset dataset = SampleDataset.generateDataset();
     assertNotNull("randomly-generating a dataset should work", dataset);

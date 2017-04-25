@@ -93,6 +93,8 @@ public final class StructureTest extends FixturedTest {
     assertNotEquals("non-identical geopoints should not match", geopoint1, geopoint3);
     assertNotEquals("non-identical geopoint objects should match", geopoint1, 1);
     assertTrue("geopoint.toString should start with 'Point'", geopoint1.toString().startsWith("Point"));
+    assertNotEquals("geopoint.hashCode should vary between non-identical points", geopoint1.hashCode(), geopoint3.hashCode());
+    assertEquals("geopoint.hashCode should not vary between identical points", geopoint1.hashCode(), geopoint2.hashCode());
   }
 
   @Test
