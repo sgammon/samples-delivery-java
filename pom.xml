@@ -28,7 +28,6 @@
 
         <!-- Plugins -->
         <javadoc.opts> </javadoc.opts>
-        <dokka.version>0.9.13</dokka.version>
         <maven.reporting.version>2.19.1</maven.reporting.version>
         <maven.compiler.version>3.6.1</maven.compiler.version>
         <maven.clean.version>3.0.0</maven.clean.version>
@@ -289,30 +288,6 @@
                     <injar>${project.build.finalName}.jar</injar>
                     <outjar>${project.artifactId}-${project.version}.jar</outjar>
                     <proguardInclude>${project.basedir}/homework.pro</proguardInclude>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.jetbrains.dokka</groupId>
-                <artifactId>dokka-maven-plugin</artifactId>
-                <version>${dokka.version}</version>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>dokka</goal>
-                        </goals>
-                    </execution>
-                </executions>
-                <configuration>
-                    <sourceDirectories>
-                        <sourceDirectory>${project.basedir}/src/main/java</sourceDirectory>
-                    </sourceDirectories>
-                    <sourceLinks>
-                        <link>
-                            <dir>${project.basedir}/src/main/java</dir>
-                            <url>https://github.com/momentum/service/tree/master/src/main/java</url>
-                        </link>
-                    </sourceLinks>
                 </configuration>
             </plugin>
             <plugin>
