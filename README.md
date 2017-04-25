@@ -10,9 +10,10 @@
 This codebase is written for a take-home problem assigned during an interview with OnFleet. 
 
 ### How to Build
-Code is written in *[Java 8]()*, which ships with recent copies of Mac OS X. For build tools, *[Maven]()*
-and *[Make]()* are used. If you have *[Homebrew]()* installed, you can simply run `make` and the `Makefile` will
-auto-install *Maven* for you. `make` is optional but *Maven* and *Java* are not ;).
+Code is written in *[Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)*,
+which ships with recent copies of Mac OS X. For build tools, *[Maven](https://maven.apache.org/)* and
+*[GNU Make](https://www.gnu.org/software/make/)* are used. If you have *[Homebrew]()* installed, you can simply run
+`make` and the `Makefile` will auto-install *Maven* for you. `make` is optional but *Maven* and *Java* are not ;).
 
 ### Further help
 Just run `make help` for a list of available codebase commands, or run the standard gamut of Maven commands, like `mvn clean install`.
