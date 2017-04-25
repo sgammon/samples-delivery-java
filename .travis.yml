@@ -8,4 +8,4 @@ addons:
 jdk:
   - oraclejdk8
 
-script: make release
+script: make install TESTS=0 && make release
