@@ -120,6 +120,14 @@ public final class NameHelper implements Serializable, Iterator<String> {
     return this.generateName();
   }
 
+  /**
+   * Remove an item from the iterator. Unsupported.
+   */
+  @Override
+  public void remove() {
+    throw new UnsupportedOperationException();
+  }
+
   // -- public API -- //
   /**
    * Generate a combo of a first and last name from our bag-of-names data.
