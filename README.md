@@ -4,10 +4,10 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/ccfa5c3038464d708051888e1cf45311)](https://www.codacy.com/app/samuel-gammon/samples-delivery-java?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sgammon/samples-delivery-java&amp;utm_campaign=Badge_Grade)
 [![Code Climate](https://codeclimate.com/github/sgammon/samples-delivery-java.png)](https://codeclimate.com/github/sgammon/samples-delivery-java)
 
-∞ OnFleet // @sgammon
+∞ // @sgammon
 
 ## Overview
-This codebase is written for a take-home problem assigned during an interview with OnFleet. 
+This codebase is written for a take-home problem assigned during an interview with ∞. 
 
 ### How to Build
 Code is written in *[Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)*,
@@ -81,3 +81,5 @@ Improve the approach to scale sub-linearly with the number of total possible ass
 ### Credit and licensing
 - Name data from [enorvelle/NameDatabases](https://github.com/enorvelle/NameDatabases)
 - GeoJSON bounds from [johan/world.geo.json](https://github.com/johan/world.geo.json)
+
+![∞](https://d1er272rpp2pqg.cloudfront.net/d54c2859/app/images/home/section-hero-logo.svg "∞")
