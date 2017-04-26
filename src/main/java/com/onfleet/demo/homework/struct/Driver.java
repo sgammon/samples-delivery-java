@@ -75,7 +75,7 @@ public final class Driver implements Serializable {
    */
   @Override
   public String toString() {
-    return this.name;
+    return this.name == null ? this.uuid : this.name;
   }
 
 

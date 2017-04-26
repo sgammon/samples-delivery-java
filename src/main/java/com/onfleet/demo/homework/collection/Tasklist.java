@@ -73,6 +73,7 @@ public final class Tasklist implements Comparable<Tasklist> {
   public Tasklist(final @NotNull Driver driver,
                   final @NotNull Collection<Task> tasks) {
     this.driver = driver;
+    this.knownDistance = 0.0;
 
     // note: copied here to avoid mutation of underlying private value -
     // chose not to use `unmodifiableCollection` because we modify tasks as we go
@@ -146,11 +147,7 @@ public final class Tasklist implements Comparable<Tasklist> {
   @Override
   public int compareTo(final @NotNull Tasklist other) {
     // equal load estimate: probably no tasks on either side, so, 0.0
-    if (other.loadEstimate == this.loadEstimate)
-      return 0;  // they're effectively equal
-    if (other.loadEstimate < this.loadEstimate)
-      return -1;  // this list should win
-    return 1;  // other list should win
+    return Double.compare(other.loadEstimate, this.loadEstimate);
   }
 
   /**
