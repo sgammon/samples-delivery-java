@@ -25,8 +25,7 @@ public abstract class FixturedTest {
    */
   @Before
   public void setUpFixtures() {
-    AppLogger._enableLogging();
-    AppLogger._enableLogging(true);
+    AppLogger._disableLogging();
     this.sampleDataset = SampleDataset.generateDataset();
   }
 

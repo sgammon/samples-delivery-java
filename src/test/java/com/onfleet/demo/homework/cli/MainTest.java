@@ -14,6 +14,9 @@ public final class MainTest {
   @Test
   public void testConstructLogger() {
     new AppLogger();
+    AppLogger._enableLogging();
+    AppLogger._enableLogging(true);
+    AppLogger._disableLogging();
   }
 
   @Test
