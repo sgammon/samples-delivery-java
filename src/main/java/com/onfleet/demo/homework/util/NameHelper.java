@@ -3,6 +3,7 @@ package com.onfleet.demo.homework.util;
 
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.onfleet.demo.homework.cli.AppLogger;
 import javax.annotation.concurrent.Immutable;
 import org.jetbrains.annotations.NotNull;
 
@@ -78,6 +79,7 @@ public final class NameHelper implements Serializable, Iterator<String> {
    * @throws IOException If the underlying embedded name data cannot be loaded.
    */
   NameHelper() throws IOException {
+    AppLogger.say("NameHelper", "Loading random name data for drivers...");
     this.firstNames = loadBuiltinNamesFromFile(firstNameFile);
     this.lastNames = loadBuiltinNamesFromFile(lastNameFile);
     this.numberOfFirstNames = this.firstNames.size();
@@ -116,6 +118,14 @@ public final class NameHelper implements Serializable, Iterator<String> {
   @Override
   public String next() {
     return this.generateName();
+  }
+
+  /**
+   * Remove an item from the iterator. Unsupported.
+   */
+  @Override
+  public void remove() {
+    throw new UnsupportedOperationException();
   }
 
   // -- public API -- //

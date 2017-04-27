@@ -4,6 +4,7 @@ package com.onfleet.demo.homework.collection;
 import com.onfleet.demo.homework.struct.Driver;
 import com.onfleet.demo.homework.struct.Task;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -14,7 +15,7 @@ import java.util.Collection;
  * {@link Task} objects currently assigned to that {@link Driver}.
  */
 @SuppressWarnings("WeakerAccess")
-public final class Tasklist {
+public final class Tasklist implements Comparable<Tasklist> {
   // -- internals -- //
   /**
    * Assigned {@link Driver} for this tasklist.
@@ -26,15 +27,41 @@ public final class Tasklist {
    */
   final @NotNull Collection<Task> assignedTasks;
 
+  /**
+   * Last assigned task for this {@link Driver}.
+   */
+  @Nullable Task lastAssignedTask;
+
+  /**
+   * Current count of assigned tasks, cached so we don't have to keep
+   * interrogating the task collection.
+   */
+  int taskCount;
+
+  /**
+   * Current load estimate given the set of {@link Task} records assigned
+   * to this {@link Tasklist}.
+   */
+  double loadEstimate;
+
+  /**
+   * Current known distance of assigned tasks to this {@link Tasklist}.
+   */
+  double knownDistance;
+
   // -- constructor -- //
   /**
    * Construct an empty task-list for a given {@link Driver}.
    *
    * @param driver Driver object for this task-list.
    */
-  Tasklist(final @NotNull Driver driver) {
+  public Tasklist(final @NotNull Driver driver) {
     this.driver = driver;
     this.assignedTasks = new ArrayList<>();
+    this.loadEstimate = 0.0;
+    this.knownDistance = 0.0;
+    this.taskCount = 0;
+    this.lastAssignedTask = null;
   }
 
   /**
@@ -43,14 +70,107 @@ public final class Tasklist {
    * @param driver Driver object for this task-list.
    * @param tasks Collection of tasks for this driver.
    */
-  Tasklist(final @NotNull Driver driver,
-           final @NotNull Collection<Task> tasks) {
+  public Tasklist(final @NotNull Driver driver,
+                  final @NotNull Collection<Task> tasks) {
     this.driver = driver;
+    this.knownDistance = 0.0;
 
     // note: copied here to avoid mutation of underlying private value -
     // chose not to use `unmodifiableCollection` because we modify tasks as we go
     this.assignedTasks = new ArrayList<>(tasks.size());
     this.assignedTasks.addAll(tasks);
+    this.taskCount = this.assignedTasks.size();
+
+    Task lastTask = null;
+    double currentKnownDistance = this.knownDistance;
+    for (final Task task : tasks) {
+      currentKnownDistance += calculateDistanceForPoints(lastTask, task);
+      lastTask = task;
+    }
+    this.lastAssignedTask = lastTask;
+    this.knownDistance = currentKnownDistance;
+    recalculateLoadEstimate();
+  }
+
+  // -- static API -- //
+  /**
+   * Calculate the distance cost between two tasks using their
+   * underlying geopoints.
+   *
+   * @param start Start geopoint.
+   * @param finish End geopoint.
+   * @return The value to use for the distance.
+   */
+  public static double calculateDistanceForPoints(final Task start, final Task finish) {
+    if (start == null)
+      // it's the first task for this driver: the distance is 0
+      return 0.0;
+
+    // get min and max points
+    final double largestLatitude = Math.abs(Math.max(start.getLocation().getGeopoint().getLatitude(),
+                                            finish.getLocation().getGeopoint().getLatitude()));
+
+    final double largestLongitude = Math.abs(Math.max(start.getLocation().getGeopoint().getLongitude(),
+                                             start.getLocation().getGeopoint().getLongitude()));
+
+    final double smallestLatitude = Math.abs(Math.min(start.getLocation().getGeopoint().getLatitude(),
+                                             finish.getLocation().getGeopoint().getLatitude()));
+
+    final double smallestLongitude = Math.abs(Math.min(start.getLocation().getGeopoint().getLongitude(),
+                                              start.getLocation().getGeopoint().getLongitude()));
+
+    // return summed absolute difference of points
+    final double difference = ((largestLatitude - smallestLatitude) + (largestLongitude - smallestLongitude));
+
+    // make sure we're acting sane
+    assert difference >= 0.0;
+    return difference;
+  }
+
+  // -- private API -- //
+  /**
+   * Recalculate the internal load estimate after mutating the set of assigned
+   * tasks for this {@link Driver}.
+   */
+  private void recalculateLoadEstimate() {
+    this.loadEstimate += this.knownDistance;
+  }
+
+  // -- interface compliance: Comparable<Tasklist> -- //
+  /**
+   * Compare two tasklists, using their estimated current cost to give them an
+   * order.
+   *
+   * @param other Other tasklist.
+   * @return Comparison status for these two {@link Tasklist} objects.
+   */
+  @Override
+  public int compareTo(final @NotNull Tasklist other) {
+    // equal load estimate: probably no tasks on either side, so, 0.0
+    return Double.compare(other.loadEstimate, this.loadEstimate);
+  }
+
+  /**
+   * Overridden copy of `equals`.
+   *
+   * @param other Other object.
+   * @return Whether the other object is equal to this one.
+   */
+  @Override
+  public boolean equals(final Object other) {
+    // defer to hashCode
+    return other instanceof Tasklist && other.hashCode() == this.hashCode();
+  }
+
+  /**
+   * Defer to the underlying {@link Driver}'s UUID for this object's
+   * hash code.
+   *
+   * @return Hash code of the underlying {@link Driver}'s UUID.
+   */
+  @Override
+  public int hashCode() {
+    return this.getDriver().hashCode();
   }
 
   // -- public API -- //
@@ -62,18 +182,11 @@ public final class Tasklist {
    */
   public void assignTask(final @NotNull Task task) {
     //noinspection ConstantConditions
-    if (task == null)
-      throw new IllegalArgumentException("Cannot assign `null` Task record.");
     this.assignedTasks.add(task);
-  }
-
-  /**
-   * Count the number of tasks assigned to this {@link Driver}.
-   *
-   * @return Count of the number of tasks assigned.
-   */
-  public int countTasks() {
-    return assignedTasks.size();
+    this.taskCount += 1;
+    this.knownDistance += calculateDistanceForPoints(this.lastAssignedTask, task);
+    this.lastAssignedTask = task;
+    this.recalculateLoadEstimate();
   }
 
   /**
@@ -88,8 +201,10 @@ public final class Tasklist {
    *         and thus the cost would essentially be the distance of the
    *         task itself.
    */
-  public float costToAssignTask(final Task task) {
-    return 0;  // @TODO actual algorithm
+  public double costToAssignTask(final Task task) {
+    if (lastAssignedTask == null)
+      return 0.0;  // it would be this driver's first task: no cost
+    return calculateDistanceForPoints(this.lastAssignedTask, task);
   }
 
   // -- getters -- //
@@ -107,5 +222,37 @@ public final class Tasklist {
   @NotNull
   public Collection<Task> getAssignedTasks() {
     return assignedTasks;
+  }
+
+  /**
+   * @return Boxed {@link Integer} describing the number of tasks this {@link Tasklist} has.
+   */
+  @NotNull
+  public Integer getTaskCount() {
+    return taskCount;
+  }
+
+  /**
+   * @return Boxed {@link Double} describing the estimated load this {@link Tasklist} is assigned.
+   */
+  @NotNull
+  public Double getLoadEstimate() {
+    return loadEstimate;
+  }
+
+  /**
+   * @return Boxed {@link Double} describing the known distance this driver already has.
+   */
+  @NotNull
+  public Double getKnownDistance() {
+    return knownDistance;
+  }
+
+  /**
+   * @return Last assigned task to this {@link Tasklist}.
+   */
+  @Nullable
+  public Task getLastAssignedTask() {
+    return lastAssignedTask;
   }
 }

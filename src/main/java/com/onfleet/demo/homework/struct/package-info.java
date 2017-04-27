@@ -1,6 +1,6 @@
 
 /**
- * Holds structures that are used as data by the {@link com.onfleet.demo.homework.RouteCalculator}
+ * Holds structures that are used as data by the {@link com.onfleet.demo.homework.TaskManager}
  * for the OnFleet homework problem.
  *
  * @author sam

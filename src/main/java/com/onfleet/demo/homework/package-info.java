@@ -1,6 +1,6 @@
 
 /**
- * Contains {@link com.onfleet.demo.homework.RouteCalculator} and associated objects, for a demo take-home
+ * Contains {@link com.onfleet.demo.homework.TaskManager} and associated objects, for a demo take-home
  * interview problem assigned to Sam Gammon by OnFleet.
  *
  * @author sam

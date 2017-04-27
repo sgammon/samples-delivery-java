@@ -90,11 +90,14 @@ public final class SampleDataset implements Serializable {
       final int variance = (spec.getTasksPerDriver() - spec.getVarianceInTasksPerDriver());
       while (driverIndex <= spec.getNumberOfDrivers()) {
         // decide how many tasks, roughly, this driver will have, and add it to the total
-        final int tasks = spec.getTasksPerDriver() - RandomNumberUtil.getRandomGenerator().nextInt(variance);
+        final int tasks = spec.getTasksPerDriver() - (Math.abs(variance) > 0 ?
+                              RandomNumberUtil.getRandomGenerator()
+                                              .nextInt(Math.abs(variance))
+                              : 1);
         tasksToGenerate += tasks;
 
         // generate a driver
-        final Driver generatedDriver = Driver.factory(nameHelper.generateName());
+        final Driver generatedDriver = ObjectGenerator.generateDriver(nameHelper);
         generatedDrivers.add(generatedDriver);
         driverIndex++;
       }

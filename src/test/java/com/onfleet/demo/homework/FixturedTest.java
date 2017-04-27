@@ -2,6 +2,7 @@ package com.onfleet.demo.homework;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.onfleet.demo.homework.cli.AppLogger;
 import com.onfleet.demo.homework.util.SampleDataset;
 import org.jetbrains.annotations.Nullable;
 import org.junit.After;
@@ -24,6 +25,7 @@ public abstract class FixturedTest {
    */
   @Before
   public void setUpFixtures() {
+    AppLogger._disableLogging();
     this.sampleDataset = SampleDataset.generateDataset();
   }
 
@@ -33,6 +35,7 @@ public abstract class FixturedTest {
   @After
   public void tearDownFixtures() {
     this.sampleDataset = null;
+    AppLogger._disableLogging();
   }
 
   // -- subclass API -- //
