@@ -61,6 +61,9 @@ public final class BlindTaskManager extends BaseTaskManager implements TaskAssig
    */
   @NotNull @Override
   public Driver resolveLowestCostAssignment(final @NotNull Task task) {
+    for (final Map.Entry<Driver, LinkedHashSet<Task>> tasksetEntry : this.taskboard.entrySet()) {
+
+    }
     return null;
   }
 
