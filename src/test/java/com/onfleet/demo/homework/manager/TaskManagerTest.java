@@ -1,6 +1,8 @@
-package com.onfleet.demo.homework;
+package com.onfleet.demo.homework.manager;
 
 
+import com.onfleet.demo.homework.FixturedTest;
+import com.onfleet.demo.homework.TaskAssigner;
 import com.onfleet.demo.homework.struct.Driver;
 import com.onfleet.demo.homework.struct.Task;
 import com.onfleet.demo.homework.util.ObjectGenerator;
@@ -23,13 +25,13 @@ public final class TaskManagerTest extends FixturedTest {
 
   @Test
   public void testConstructViaPublicAPI() {
-    final TaskManager manager = TaskManager.setupWithDataset(this.getSampleDataset());
+    final TaskAssigner manager = TaskManager.setupWithDataset(this.getSampleDataset());
     assertNotNull("TaskManager should not be null when factoried", manager);
   }
 
   @Test
   public void testAssignTaskToPreviouslyUnknownDriver() {
-    final TaskManager manager = new TaskManager(this.getSampleDataset().getGeneratedDrivers());
+    final TaskAssigner manager = new TaskManager(this.getSampleDataset().getGeneratedDrivers());
     final Driver generatedDriver = ObjectGenerator.generateDriver();
     final Task generatedTask = ObjectGenerator.generateTask();
     manager.assignToDriver(generatedDriver, generatedTask);
@@ -37,7 +39,7 @@ public final class TaskManagerTest extends FixturedTest {
 
   @Test
   public void testAssignMultipleTasks() {
-    final TaskManager manager = new TaskManager(this.getSampleDataset().getGeneratedDrivers());
+    final TaskAssigner manager = new TaskManager(this.getSampleDataset().getGeneratedDrivers());
     final Driver generatedDriver = ObjectGenerator.generateDriver();
     final Task generatedTask = ObjectGenerator.generateTask();
     final Task generatedTask2 = ObjectGenerator.generateTask();

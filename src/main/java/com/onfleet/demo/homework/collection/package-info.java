@@ -1,6 +1,6 @@
 
 /**
- * Holds collection-style objects related to the {@link com.onfleet.demo.homework.TaskManager}
+ * Holds collection-style objects related to the {@link com.onfleet.demo.homework.manager.TaskManager}
  * homework problem.
  *
  * @author sam

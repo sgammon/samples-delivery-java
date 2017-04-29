@@ -10,10 +10,42 @@
 This codebase is written for a take-home problem assigned during an interview with ∞. 
 
 ### How to Build
+Just run `make`.
+
+### Tour
+Here's how it works:
+- _Phase 1_: [Autogenerate data](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/util/ObjectGenerator.java#L24) *or* [load a dataset](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/util/FileUtil.java#L24) from [JSON embedded in the JAR](https://github.com/sgammon/samples-delivery-java/blob/master/datafiles/testsuite.json)
+  - A set of [common US first and last names is downloaded](https://github.com/sgammon/samples-delivery-java/blob/master/Makefile#L97) upon first `make` and used to generate [`Driver`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/struct/Driver.java)s
+  - A [rough geopoint generation algorithm](https://github.com/sgammon/samples-delivery-java/pull/2) generates [`Location`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/struct/Location.java)s for [`Task`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/struct/Task.java)s
+- _Phase 2_: Assign [`Task`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/struct/Task.java) records from the dataset to [`Driver`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/struct/Driver.java)s
+  - [`Tasklist`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/collection/Tasklist.java) is initially used, in concert with [`TaskManager`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/manager/TaskManager.java), which is [optimized for reading](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/manager/TaskManager.java#L104) by [controlling the write path](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/collection/Tasklist.java#L183)
+- _Phase 3_: With an ordered list of [`Task`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/struct/Task.java)s for each [`Driver`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/struct/Driver.java), experiment with algorithms to intelligently assign more tasks
+  - [`BlindTaskManager`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/manager/BlindTaskManager.java) is used next to demonstrate lowest-cost-assignment resolution algorithms with no write path control
+
+The codebase is split into some notable Java packages (click for individual README):
+- [`com.onfleet.demo.homework.cli`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/cli/README.md): powers the `deliverytool` CLI
+- [`com.onfleet.demo.homework.collection`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/collection/README.md): contains `Tasklist`, a read-optimized task assignment structure
+- [`com.onfleet.demo.homework.manager`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/manager/README.md): implementation classes for task assignment managers
+- [`com.onfleet.demo.homework.struct`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/struct/README.md): data models/structures for `Driver`, `Location`, `Geopoint`, and `Task`
+- [`com.onfleet.demo.homework.util`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/util/README.md): static utilities, mostly for generating mock objects
+
+#### How things evolved/comments from the author
+Initially, I understood the solution to be optimizable/approachable from the write-side of the problem. To that end, once I had
+testing and devops tools in place (including some to generate data), I extended it to operate with no knowledge of the precomputed
+stats from a write-optimized run of the tool.
+
+This way, it shows how the problem may be approached both on-write and on-read, and how one might mitigate issues that arise
+from choosing one over the other.
+
+I'm not afraid of misunderstanding things. That's part of engineering. What you have to do is move on. As such, I provide this
+GitHub to show my work - the algorithms within changed as I better understood the problem. They are revised in the open, in PR's,
+with a friend simulating code review, and 4 robots scanning it for missteps.
+
+### How it's structured
 Code is written in *[Java 8](http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html)*,
 which ships with recent copies of Mac OS X. For build tools, *[Maven](https://maven.apache.org/)* and
-*[GNU Make](https://www.gnu.org/software/make/)* are used. If you have *[Homebrew]()* installed, you can simply run
-`make` and the `Makefile` will auto-install *Maven* for you. `make` is optional but *Maven* and *Java* are not ;).
+*[GNU Make](https://www.gnu.org/software/make/)* are used. If you have *[Homebrew](https://brew.sh/)* installed, you can simply run
+`make` and the `Makefile` will auto-install *Maven* for you.
 
 ### Further help
 Just run `make help` for a list of available codebase commands, or run the standard gamut of Maven commands, like `mvn clean install`.
@@ -30,6 +62,7 @@ Just run `make help` for a list of available codebase commands, or run the stand
 ### Devops and Tooling
 - Support is included for Maven and IntelliJ IDEA
 - Support for static analysis via PMD and Findbugs
+- Support for CI via Jenkins (internal) and TravisCI (public, in both Java 7 and 8)
 - Support for auto-generated documentation via Javadoc and Dokka
 - Available both as a CLI tool (`deliverytool`) or library via Maven (`com.onfleet.demo:homework`)
 - Self-documenting `make` should be bootstrap-able from basically nothing, assuming Xcode Tools are installed
@@ -55,31 +88,6 @@ Build a naive solution that produces the optimal solution and benchmark the perf
 #### Part 2
 Improve the approach to scale sub-linearly with the number of total possible assignments, (25 + 1) * driversCount here. Since it may be hard to produce the exact solution, you may use any reasonable heuristics etc to achieve this goal. You should briefly justify your solution and provide benchmark results with the same dataset from the previous part.
 
-### Followup Questions
-```text
-1) You specified sub-linear complexity. I assume you mean time complexity - is there any restriction on space?
-
-2) Forgive me, but I don't have a math background and I'm not sure what you mean by "euclidean" in this context
-   (I'm familiar with the general concept, just not its use here). Is it alright if I use geopoints with standard
-   algorithms for distance, etc, geo-bounded to the SF bay area? (Follow up, would that be what you mean?)
-
-3) When you specify an ordered list of tasks, you do mean the order in which the drivers should execute that task?
-   Or is that left up to the implementor? Is the implied need to output the tasks in an ordered way for drivers to
-   execute (for instance, in a driver-facing app) an explicit need or is there no such need?
-
-4) I like this problem, and given the choice of any language, I would implement it in Java (because of the strong
-   data-structure selection, algorithmic control w/typing and ability to optimize this kind of problem via JIT on
-   a hot JVM), specifically SE 8. Is it cool if I write it in that?
-
-5) I'd like to write tests and show my devops workflow skills by keeping this on Github. Would that work in place
-   of a Codepen, or should I paste the solution there afterwards?
-```
-
-#### Response
-*pending*
-
 ### Credit and licensing
 - Name data from [enorvelle/NameDatabases](https://github.com/enorvelle/NameDatabases)
 - GeoJSON bounds from [johan/world.geo.json](https://github.com/johan/world.geo.json)
-
-![∞](https://d1er272rpp2pqg.cloudfront.net/d54c2859/app/images/home/section-hero-logo.svg "∞")

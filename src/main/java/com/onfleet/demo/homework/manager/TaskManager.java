@@ -1,11 +1,13 @@
-package com.onfleet.demo.homework;
+package com.onfleet.demo.homework.manager;
 
 
+import com.onfleet.demo.homework.TaskAssigner;
 import com.onfleet.demo.homework.cli.AppLogger;
 import com.onfleet.demo.homework.collection.Tasklist;
 import com.onfleet.demo.homework.struct.Driver;
 import com.onfleet.demo.homework.struct.Task;
 import com.onfleet.demo.homework.util.SampleDataset;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -18,12 +20,12 @@ import java.util.*;
  * queried when assigning new tasks.
  */
 @SuppressWarnings("WeakerAccess")
-public final class TaskManager {
+public final class TaskManager extends BaseTaskManager implements TaskAssigner {
   // -- internals -- //
   /**
    * Master tasklist assignment set.
    */
-  HashMap<Driver, Tasklist> taskboard;
+  Map<Driver, Tasklist> taskboard;
 
   // -- constructor -- //
   /**
@@ -31,7 +33,7 @@ public final class TaskManager {
    */
   TaskManager(final Collection<Driver> drivers) {
     // setup initial driver tasklists
-    final HashMap<Driver, Tasklist> tasklistMap = new HashMap<>(drivers.size());
+    final Map<Driver, Tasklist> tasklistMap = new HashMap<>(drivers.size());
 
     for (final Driver driver : drivers) {
       final Tasklist tasklist = new Tasklist(driver);
@@ -67,12 +69,27 @@ public final class TaskManager {
 
   // -- public API -- //
   /**
+   * Export the current state of {@link TaskManager} into a sorted map.
+   *
+   * @return Current task-board, sans pre-computed weighting data.
+   */
+  public @NotNull Map<Driver, LinkedHashSet<Task>> export() {
+    final Map<Driver, LinkedHashSet<Task>> payload = new HashMap<>();
+    for (final Map.Entry<Driver, LinkedHashSet<Task>> entry : payload.entrySet()) {
+      final LinkedHashSet<Task> targetSet = new LinkedHashSet<>(entry.getValue().size());
+      targetSet.addAll(entry.getValue());
+      payload.put(entry.getKey(), targetSet);
+    }
+    return payload;
+  }
+
+  /**
    * Assign a {@link Task} to a {@link Driver}.
    *
    * @param driver Driver we are assigning to.
    * @param task Task we are assigning.
    */
-  public void assignToDriver(final Driver driver, final Task task) {
+  public void assignToDriver(final @NotNull Driver driver, final @NotNull Task task) {
     AppLogger.say("TaskManager", "Assigning task '"
                                      + task.getUuid() + "' to " + driver.getName() + "...");
     final Tasklist tasklist = this.taskboard.get(driver);
@@ -83,25 +100,13 @@ public final class TaskManager {
   }
 
   /**
-   * Assign a collection of {@link Task} records to a {@link Driver}.
-   *
-   * @param driver Driver we are assigning to.
-   * @param tasks Collection of tasks we are assigning.
-   */
-  public void assignToDriver(final Driver driver, final Iterable<Task> tasks) {
-    for (final Task task : tasks) {
-      assignToDriver(driver, task);
-    }
-  }
-
-  /**
    * Given a {@link Task}, figure out the cheapest cost for who to assign it to in the set of
    * active {@link Driver} {@link Tasklist} records, given their current workload.
    *
    * @param task Task that we wish to assign to someone.
    * @return {@link Driver} that should be assigned the task.
    */
-  public Driver resolveLowestCostAssignment(final Task task) {
+  public @NotNull Driver resolveLowestCostAssignment(final @NotNull Task task) {
     double estimatedCost;
     double lowestCostSoFar = 0.0;
     Tasklist resolvedList = null;
@@ -135,47 +140,7 @@ public final class TaskManager {
    * @param driver Driver to retrieve a tasklist for.
    * @return Driver's tasklist, if we've seen them before, or <pre>null</pre>.
    */
-  public @Nullable Tasklist tasklistForDriver(final Driver driver) {
+  public @Nullable Tasklist tasklistForDriver(final @NotNull Driver driver) {
     return this.taskboard.get(driver);
-  }
-
-  /**
-   * Build a report of drivers and their task loads. The list should be
-   * sorted by task load.
-   *
-   * @return {@link StringBuilder}, pre-filled with a report to be printed.
-   */
-  public StringBuilder report() {
-    // not really worried about performance at the end of our run...
-    final StringBuilder sb = new StringBuilder();
-    final List<Tasklist> tasklistSet = new ArrayList<>(this.taskboard.values());
-
-    // sort in descending order
-    Collections.sort(tasklistSet);
-    Collections.reverse(tasklistSet);
-
-    sb.append("");
-    sb.append("------------- Task Report -------------\n");
-
-    for (final Tasklist list : tasklistSet) {
-      sb.append(list.getDriver().getName());
-      sb.append(": estimate(");
-      sb.append(list.getLoadEstimate());
-      sb.append("), ");
-      sb.append("assigned(");
-      sb.append(list.getAssignedTasks().size());
-      sb.append("), ");
-
-      // get first and last task, calculate total distance they have to go
-      final Task firstTask = list.getAssignedTasks().iterator().next();
-      final Task lastTask = list.getLastAssignedTask();
-      final Double totalDistanceForDriver = Tasklist.calculateDistanceForPoints(firstTask, lastTask);
-
-      sb.append("total(");
-      sb.append(totalDistanceForDriver);
-      sb.append(")\n");
-    }
-    sb.append("");
-    return sb;
   }
 }

@@ -2,7 +2,7 @@ package com.onfleet.demo.homework.collection;
 
 
 import com.onfleet.demo.homework.FixturedTest;
-import com.onfleet.demo.homework.TaskManager;
+import com.onfleet.demo.homework.manager.TaskManager;
 import com.onfleet.demo.homework.struct.Driver;
 import com.onfleet.demo.homework.struct.Task;
 import com.onfleet.demo.homework.util.ObjectGenerator;
