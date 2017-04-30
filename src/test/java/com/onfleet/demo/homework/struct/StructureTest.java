@@ -5,6 +5,7 @@ import com.onfleet.demo.homework.FixturedTest;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.util.Iterator;
 
 import static org.junit.Assert.*;
 
@@ -26,6 +27,37 @@ public final class StructureTest extends FixturedTest {
   public void testDriverObjectFromJSON() throws IOException {
     final String jsonSample = "{\"uuid\": \"ed01d72e-02f8-4ba3-be22-d00fe19b3632\", \"name\": \"Bill Withers\"}";
     this.objectMapper().readerFor(Driver.class).readValue(jsonSample);
+  }
+
+  @Test
+  public void testDriverObjectToString() throws IOException {
+    final Driver subject = this.getSampleDataset().getGeneratedDrivers().iterator().next();
+    assertEquals("driver.toString() should return a name when it has one",
+                 subject.getName(),
+                 subject.toString());
+
+    final Driver subject2 = Driver.factory(null);
+    assertEquals("driver.toString() should return a UUID when it has no name",
+                 subject2.getUuid(),
+                 subject2.toString());
+  }
+
+  @Test
+  public void testDriverObjectComparison() throws IOException {
+    final Driver subject = this.getSampleDataset().getGeneratedDrivers().iterator().next();
+    final Driver sameSubject = this.getSampleDataset().getGeneratedDrivers().iterator().next();
+
+    Iterator<Driver> driverIterator = this.getSampleDataset().getGeneratedDrivers().iterator();
+    driverIterator.next();  // skip first
+    final Driver differentSubject = driverIterator.next();
+
+    assertEquals("identical drivers should equal each other",
+                 subject,
+                 sameSubject);
+
+    assertNotEquals("different drivers should equal each other",
+                    subject,
+                    differentSubject);
   }
 
   @Test
@@ -95,6 +127,11 @@ public final class StructureTest extends FixturedTest {
     assertTrue("geopoint.toString should start with 'Point'", geopoint1.toString().startsWith("Point"));
     assertNotEquals("geopoint.hashCode should vary between non-identical points", geopoint1.hashCode(), geopoint3.hashCode());
     assertEquals("geopoint.hashCode should not vary between identical points", geopoint1.hashCode(), geopoint2.hashCode());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void testGeopointNullCheck() {
+    @SuppressWarnings("ConstantConditions") final Geopoint geopoint1 = new Geopoint(null, null);
   }
 
   @Test

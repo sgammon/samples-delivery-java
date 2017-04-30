@@ -17,9 +17,6 @@ import java.util.Collection;
  */
 @SuppressWarnings("WeakerAccess")
 public final class Tasklist implements Comparable<Tasklist> {
-  // -- algorithm configuration -- //
-  public final static double TASK_COUNT_WEIGHT = 0.2;
-
   // -- internals -- //
   /**
    * Assigned {@link Driver} for this tasklist.
@@ -135,8 +132,7 @@ public final class Tasklist implements Comparable<Tasklist> {
    * tasks for this {@link Driver}.
    */
   private void recalculateLoadEstimate() {
-    final double taskCountAsDouble = (double)this.taskCount;
-    this.loadEstimate += ((this.knownDistance / taskCountAsDouble) * (taskCountAsDouble * TASK_COUNT_WEIGHT));
+    this.loadEstimate = this.knownDistance;
   }
 
   // -- interface compliance: Comparable<Tasklist> -- //

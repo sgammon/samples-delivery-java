@@ -31,7 +31,7 @@ public final class TaskManager extends BaseTaskManager implements TaskAssigner {
   /**
    * Build a new task manager, given a set of drivers we will be distributing tasks over.
    */
-  TaskManager(final Collection<Driver> drivers) {
+  private TaskManager(final Collection<Driver> drivers) {
     // setup initial driver tasklists
     final Map<Driver, Tasklist> tasklistMap = new HashMap<>(drivers.size());
 

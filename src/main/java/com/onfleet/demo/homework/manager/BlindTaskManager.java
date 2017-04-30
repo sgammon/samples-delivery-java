@@ -8,7 +8,6 @@ import com.onfleet.demo.homework.struct.Task;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -47,7 +46,7 @@ public final class BlindTaskManager extends BaseTaskManager implements TaskAssig
    * @param candidateTask Cost difference for list with task assigned.
    * @return "Cost" estimate for this tasklist, given the additional candidate {@link Task}.
    */
-  private double costForTasklist(final Collection<Task> tasklist, final Task candidateTask) {
+  private double costForTasklist(final Iterable<Task> tasklist, final Task candidateTask) {
     // calculate the summed distance of all tasks...
     double summedDistance = 0.0;
     Task lastTaskSeen = null;
@@ -56,11 +55,8 @@ public final class BlindTaskManager extends BaseTaskManager implements TaskAssig
       lastTaskSeen = taskItem;
     }
 
-    double count = (double)tasklist.size();
-
-    // factor in count of tasks and total distance, with this candidate task considered
-    return (count + 1.0) * (Tasklist.TASK_COUNT_WEIGHT * (summedDistance
-                             + Tasklist.calculateDistanceForPoints(lastTaskSeen, candidateTask)));
+    // simple distance, for now, added to the end of the list
+    return summedDistance + Tasklist.calculateDistanceForPoints(lastTaskSeen, candidateTask);
   }
 
   // -- public API -- //

@@ -12,7 +12,8 @@ import java.io.IOException;
  */
 public final class MainTest {
   @Test
-  public void testConstructLogger() {
+  public void testConstructors() {
+    new Main();
     new AppLogger();
     AppLogger._enableLogging();
     AppLogger._enableLogging(true);
