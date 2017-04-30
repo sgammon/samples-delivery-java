@@ -18,6 +18,11 @@ import static org.junit.Assert.assertNull;
  */
 public class ObjectGeneratorTest extends FixturedTest {
   @Test
+  public void testEmptyConstructor() {
+    new ObjectGenerator();
+  }
+
+  @Test
   public void testGenerateDriver() {
     final Driver newDriver = ObjectGenerator.generateDriver();
     assertNotNull("generated driver must not be null", newDriver);

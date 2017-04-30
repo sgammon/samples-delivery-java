@@ -79,7 +79,8 @@ final public class ObjectGenerator {
     final double longitudeHiMark;
 
     /**
-     * Seal watermarks in a structure to contain them.
+     * Seal watermarks in a structure to contain them, and pre-compute
+     * a higher-resolution copy via multiplication.
      *
      * @param latitudeLowMark Lowest latitude encountered.
      * @param latitudeHiMark Highest latitude encountered.
@@ -90,10 +91,10 @@ final public class ObjectGenerator {
                       final double latitudeHiMark,
                       final double longitudeLowMark,
                       final double longitudeHiMark) {
-      this.latitudeLowMark = latitudeLowMark;
-      this.latitudeHiMark = latitudeHiMark;
-      this.longitudeLowMark = longitudeLowMark;
-      this.longitudeHiMark = longitudeHiMark;
+      this.latitudeLowMark = latitudeLowMark * Watermarks.precisionMultiple;
+      this.latitudeHiMark = latitudeHiMark * Watermarks.precisionMultiple;
+      this.longitudeLowMark = longitudeLowMark * Watermarks.precisionMultiple;
+      this.longitudeHiMark = longitudeHiMark * Watermarks.precisionMultiple;
     }
 
     /**
@@ -130,15 +131,15 @@ final public class ObjectGenerator {
    *
    * @return Random Location.
    */
+  @SuppressWarnings("MagicNumber")
   static @NotNull Geopoint randomLocationWithinBounds() {
     // quick and dirty algorithm to generate roughly within the points
     final Random randomGenerator = RandomNumberUtil.getRandomGenerator();
 
-    // @TODO: cache these
-    final double morePreciseLowLatitude = geopointWatermarks.getLatitudeLowMark() * Watermarks.precisionMultiple;
-    final double morePreciseLowLongitude = geopointWatermarks.getLongitudeLowMark() * Watermarks.precisionMultiple;
-    final double morePreciseHiLatitude = geopointWatermarks.getLatitudeHiMark() * Watermarks.precisionMultiple;
-    final double morePreciseHiLongitude = geopointWatermarks.getLongitudeHiMark() * Watermarks.precisionMultiple;
+    final double morePreciseLowLatitude = geopointWatermarks.getLatitudeLowMark();
+    final double morePreciseLowLongitude = geopointWatermarks.getLongitudeLowMark();
+    final double morePreciseHiLatitude = geopointWatermarks.getLatitudeHiMark();
+    final double morePreciseHiLongitude = geopointWatermarks.getLongitudeHiMark();
 
     double xValue = Math.abs(morePreciseLowLatitude) + randomGenerator.nextInt(Math.abs((int)morePreciseHiLatitude / 100));
     double yValue = Math.abs(morePreciseLowLongitude) + randomGenerator.nextInt(Math.abs((int)morePreciseHiLongitude / 100));

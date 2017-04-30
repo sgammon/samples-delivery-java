@@ -13,7 +13,8 @@ import static org.junit.Assert.assertTrue;
 
 
 /**
- * Created by sam on 4/24/17.
+ * Tests {@link NameHelper}, which parses random name data and generates random
+ * names for {@link com.onfleet.demo.homework.struct.Driver} records.
  */
 @SuppressWarnings("unused")
 public class NameHelperTest extends FixturedTest {
@@ -42,5 +43,12 @@ public class NameHelperTest extends FixturedTest {
 
     assertTrue("NameHelper.hasNext should always be true", nameHelper.hasNext());
     assertNotNull("NameHelper.next should return a randomly-generated name", nameHelper.next());
+  }
+
+  @Test(expected = UnsupportedOperationException.class)
+  public void testConstructNameHelperIteratorRemove() throws IOException {
+    final SampleDataset dataset = this.getSampleDataset();
+    final NameHelper nameHelper = dataset.getNames();
+    nameHelper.remove();
   }
 }
