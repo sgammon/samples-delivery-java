@@ -2,6 +2,7 @@ package com.onfleet.demo.homework.collection;
 
 
 import com.onfleet.demo.homework.struct.Driver;
+import com.onfleet.demo.homework.struct.Geopoint;
 import com.onfleet.demo.homework.struct.Task;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -16,6 +17,9 @@ import java.util.Collection;
  */
 @SuppressWarnings("WeakerAccess")
 public final class Tasklist implements Comparable<Tasklist> {
+  // -- algorithm configuration -- //
+  public final static double TASK_COUNT_WEIGHT = 0.2;
+
   // -- internals -- //
   /**
    * Assigned {@link Driver} for this tasklist.
@@ -106,21 +110,19 @@ public final class Tasklist implements Comparable<Tasklist> {
       // it's the first task for this driver: the distance is 0
       return 0.0;
 
+    final Geopoint startPoint = start.getLocation().getGeopoint();
+    final Geopoint endPoint = finish.getLocation().getGeopoint();
+
     // get min and max points
-    final double largestLatitude = Math.abs(Math.max(start.getLocation().getGeopoint().getLatitude(),
-                                            finish.getLocation().getGeopoint().getLatitude()));
+    final double largestLatitude = Math.max(startPoint.getLatitude(), endPoint.getLatitude());
+    final double largestLongitude =Math.max(startPoint.getLongitude(), endPoint.getLongitude());
 
-    final double largestLongitude = Math.abs(Math.max(start.getLocation().getGeopoint().getLongitude(),
-                                             start.getLocation().getGeopoint().getLongitude()));
-
-    final double smallestLatitude = Math.abs(Math.min(start.getLocation().getGeopoint().getLatitude(),
-                                             finish.getLocation().getGeopoint().getLatitude()));
-
-    final double smallestLongitude = Math.abs(Math.min(start.getLocation().getGeopoint().getLongitude(),
-                                              start.getLocation().getGeopoint().getLongitude()));
+    final double smallestLatitude = Math.min(startPoint.getLatitude(), endPoint.getLatitude());
+    final double smallestLongitude = Math.min(startPoint.getLongitude(), endPoint.getLongitude());
 
     // return summed absolute difference of points
-    final double difference = ((largestLatitude - smallestLatitude) + (largestLongitude - smallestLongitude));
+    final double difference = (Math.abs(largestLatitude - smallestLatitude)
+                               + Math.abs(largestLongitude - smallestLongitude));
 
     // make sure we're acting sane
     assert difference >= 0.0;
@@ -133,7 +135,8 @@ public final class Tasklist implements Comparable<Tasklist> {
    * tasks for this {@link Driver}.
    */
   private void recalculateLoadEstimate() {
-    this.loadEstimate += this.knownDistance;
+    final double taskCountAsDouble = (double)this.taskCount;
+    this.loadEstimate += ((this.knownDistance / taskCountAsDouble) * (taskCountAsDouble * TASK_COUNT_WEIGHT));
   }
 
   // -- interface compliance: Comparable<Tasklist> -- //

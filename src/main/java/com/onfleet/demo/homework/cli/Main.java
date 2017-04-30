@@ -3,7 +3,7 @@ package com.onfleet.demo.homework.cli;
 
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.onfleet.demo.homework.TaskManager;
+import com.onfleet.demo.homework.manager.TaskManager;
 import com.onfleet.demo.homework.util.FileUtil;
 import com.onfleet.demo.homework.util.KnownDataset;
 import com.onfleet.demo.homework.util.SampleDataset;

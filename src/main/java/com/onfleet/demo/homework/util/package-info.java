@@ -1,6 +1,6 @@
 
 /**
- * Supplies utilities involved with testing and/or executing the demo {@link com.onfleet.demo.homework.TaskManager}
+ * Supplies utilities involved with testing and/or executing the demo {@link com.onfleet.demo.homework.manager.TaskManager}
  * homework problem for OnFleet.
  *
  * @author sam

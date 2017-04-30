@@ -82,8 +82,21 @@ public final class AppLogger {
    * @param message Message to exit with.
    */
   public static void exit(final String message) {
+    exit(message, false);
+  }
+
+  /**
+   * Called when a fatal error has occurred. Prints a message and exits
+   * with code <pre>1</pre>. If <pre>doThrow</pre> is passed as
+   * <pre>true</pre>, {@link IllegalStateException} is thrown instead
+   * of a <pre>System.exit(1)</pre> call, mainly for testing.
+   *
+   * @param message Message to exit with.
+   * @param doThrow Whether to throw an exception or straight-up exit.
+   */
+  public static void exit(final String message, boolean doThrow) {
     logging.severe(message);
-    logging.severe("Exiting.");
-    System.exit(1);
+    if (doThrow) throw new IllegalStateException(message);
+    else System.exit(1);
   }
 }

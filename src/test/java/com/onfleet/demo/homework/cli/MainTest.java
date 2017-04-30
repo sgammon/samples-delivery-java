@@ -16,6 +16,14 @@ public final class MainTest {
     new AppLogger();
     AppLogger._enableLogging();
     AppLogger._enableLogging(true);
+    AppLogger.verbose("Test", "Test from a verbose log");
+    AppLogger._disableLogging();
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void testErrorLogging() {
+    AppLogger._enableLogging();
+    AppLogger.exit("Fatal error test", true);
     AppLogger._disableLogging();
   }
 
