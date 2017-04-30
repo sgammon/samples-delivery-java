@@ -18,7 +18,7 @@ import java.util.Collection;
 @SuppressWarnings("WeakerAccess")
 public final class Tasklist implements Comparable<Tasklist> {
   // -- algorithm configuration -- //
-  final static double TASK_COUNT_WEIGHT = 0.2;
+  public final static double TASK_COUNT_WEIGHT = 0.2;
 
   // -- internals -- //
   /**

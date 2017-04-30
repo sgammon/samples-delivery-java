@@ -75,9 +75,9 @@ public final class TaskManager extends BaseTaskManager implements TaskAssigner {
    */
   public @NotNull Map<Driver, LinkedHashSet<Task>> export() {
     final Map<Driver, LinkedHashSet<Task>> payload = new HashMap<>();
-    for (final Map.Entry<Driver, LinkedHashSet<Task>> entry : payload.entrySet()) {
-      final LinkedHashSet<Task> targetSet = new LinkedHashSet<>(entry.getValue().size());
-      targetSet.addAll(entry.getValue());
+    for (final Map.Entry<Driver, Tasklist> entry : taskboard.entrySet()) {
+      final LinkedHashSet<Task> targetSet = new LinkedHashSet<>(entry.getValue().getAssignedTasks().size());
+      targetSet.addAll(entry.getValue().getAssignedTasks());
       payload.put(entry.getKey(), targetSet);
     }
     return payload;

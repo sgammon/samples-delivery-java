@@ -8,6 +8,7 @@ import com.onfleet.demo.homework.struct.Task;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -37,6 +38,31 @@ public final class BlindTaskManager extends BaseTaskManager implements TaskAssig
     taskboard = manager.export();
   }
 
+  // -- private API -- //
+  /**
+   * Compute the cost for a {@link Driver}'s current tasklist, based on the number of
+   * tasks assigned to them, and the summed distance they must travel.
+   *
+   * @param tasklist Current tasklist for this candidate {@link Driver}.
+   * @param candidateTask Cost difference for list with task assigned.
+   * @return "Cost" estimate for this tasklist, given the additional candidate {@link Task}.
+   */
+  private double costForTasklist(final Collection<Task> tasklist, final Task candidateTask) {
+    // calculate the summed distance of all tasks...
+    double summedDistance = 0.0;
+    Task lastTaskSeen = null;
+    for (final Task taskItem : tasklist) {
+      summedDistance += Tasklist.calculateDistanceForPoints(lastTaskSeen, taskItem);
+      lastTaskSeen = taskItem;
+    }
+
+    double count = (double)tasklist.size();
+
+    // factor in count of tasks and total distance, with this candidate task considered
+    return (count + 1.0) * (Tasklist.TASK_COUNT_WEIGHT * (summedDistance
+                             + Tasklist.calculateDistanceForPoints(lastTaskSeen, candidateTask)));
+  }
+
   // -- public API -- //
   /**
    * Assign a {@link Task} to a {@link Driver}.
@@ -58,13 +84,40 @@ public final class BlindTaskManager extends BaseTaskManager implements TaskAssig
    *
    * @param task Task to be considered.
    * @return Driver to be assigned the task.
+   * @throws IllegalStateException If any task sets tracked by this object end up being
+   *         empty, which is not allowed, since this class depends on data being
+   *         generated or loaded beforehand.
    */
   @NotNull @Override
   public Driver resolveLowestCostAssignment(final @NotNull Task task) {
-    for (final Map.Entry<Driver, LinkedHashSet<Task>> tasksetEntry : this.taskboard.entrySet()) {
+    double lowestSeenLoad = 0.0;
+    Driver candidateDriver = null;
 
+    // for each driver's tasklist...
+    for (final Map.Entry<Driver, LinkedHashSet<Task>> tasksetEntry : this.taskboard.entrySet()) {
+      if (tasksetEntry.getValue().isEmpty())
+        throw new IllegalStateException("Cannot run `BlindTaskManager` without pre-loaded data.");
+
+      // task list cost with added load
+      double taskListCost = this.costForTasklist(tasksetEntry.getValue(),
+                                                 task);
+
+      if (candidateDriver == null) {
+        candidateDriver = tasksetEntry.getKey();
+        lowestSeenLoad = taskListCost;
+      } else {
+        // is the current task list less costly than our previous candidate?
+        if (lowestSeenLoad > taskListCost) {
+          // if so it's our new candidate
+          candidateDriver = tasksetEntry.getKey();
+          lowestSeenLoad = taskListCost;
+        }
+        // otherwise we can keep going
+      }
     }
-    return null;
+    if (candidateDriver == null)
+      throw new IllegalStateException("There should always be a candidate driver");
+    return candidateDriver;
   }
 
   /**
