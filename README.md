@@ -23,11 +23,11 @@ Here's how it works:
   - [`BlindTaskManager`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/manager/BlindTaskManager.java) is used next to demonstrate lowest-cost-assignment resolution algorithms with no write path control
 
 The codebase is split into some notable Java packages (click for individual README):
-- [`com.onfleet.demo.homework.cli`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/cli/README.md): powers the `deliverytool` CLI
-- [`com.onfleet.demo.homework.collection`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/collection/README.md): contains `Tasklist`, a read-optimized task assignment structure
-- [`com.onfleet.demo.homework.manager`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/manager/README.md): implementation classes for task assignment managers
-- [`com.onfleet.demo.homework.struct`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/struct/README.md): data models/structures for `Driver`, `Location`, `Geopoint`, and `Task`
-- [`com.onfleet.demo.homework.util`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/util/README.md): static utilities, mostly for generating mock objects
+- [`com.onfleet.demo.homework.cli`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/cli): powers the `deliverytool` CLI
+- [`com.onfleet.demo.homework.collection`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/collection): contains `Tasklist`, a read-optimized task assignment structure
+- [`com.onfleet.demo.homework.manager`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/manager): implementation classes for task assignment managers
+- [`com.onfleet.demo.homework.struct`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/struct): data models/structures for `Driver`, `Location`, `Geopoint`, and `Task`
+- [`com.onfleet.demo.homework.util`](https://github.com/sgammon/samples-delivery-java/blob/master/src/main/java/com/onfleet/demo/homework/util): static utilities, mostly for generating mock objects
 
 #### How things evolved/comments from the author
 Initially, I understood the solution to be optimizable/approachable from the write-side of the problem. To that end, once I had
