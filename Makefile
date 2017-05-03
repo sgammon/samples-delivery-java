@@ -1,6 +1,6 @@
 
 #
-## ∞ OnFleet Homework: Java Sample Makefile
+## ∞ Homework: Java Sample Makefile
 #
 
 # -- Config (Overridable via command line, hence the '?=')
@@ -25,7 +25,7 @@ CODACY_COMMAND ?= com.gavinmogan:codacy-maven-plugin:coverage -DcoverageReportFi
 # -- Do not modify below this line
 
 MAVEN = $(shell which mvn)
-JAVA_PACKAGE = com.onfleet.demo.homework
+JAVA_PACKAGE = com.onf.demo.homework
 STATIC_ANALYSIS_GOALS = pmd:pmd findbugs:findbugs
 REPORTING_GOALS = jacoco:report
 
@@ -51,8 +51,8 @@ docs: build  ## Build Javadocs and update the 'docs/' folder.
 	@cp -frv target/apidocs-private/apidocs/* docs/
 	@echo "Docs updated."
 
-install:  ## Build and install the OnFleet Homework code into the local Maven environment.
-	@echo "Installing OnFleet Homework tool..."
+install:  ## Build and install the ONF Homework code into the local Maven environment.
+	@echo "Installing ONF Homework tool..."
 	@mvn clean install $(MVN_OPTS)
 
 release: clean install  ## Perform a full clean-build-report flow.
@@ -60,7 +60,7 @@ release: clean install  ## Perform a full clean-build-report flow.
 	@mvn $(STATIC_ANALYSIS_GOALS) $(REPORTING_GOALS)
 	@mvn $(CODACY_COMMAND)
 
-build: $(TARGET)  ## Build the OnFleet Homework code sample for Java.
+build: $(TARGET)  ## Build the ONF Homework code sample for Java.
 	@echo "Build complete."
 
 clean:  ## Clean ephemeral build targets.
@@ -76,7 +76,7 @@ distclean: clean  ## Clean everything, including locally-cached dependencies.
 
 help:  ## Display this documentation.
 	@echo
-	@echo "∞ onfleet - Java Homework Codesample"
+	@echo "∞ onf - Java Homework Codesample"
 	@grep -E '^[a-zA-Z_-]+:.*?## .*$$' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m%-30s\033[0m %s\n", $$1, $$2}'
 	@echo
 
@@ -84,7 +84,7 @@ help:  ## Display this documentation.
 # -- File Targets
 
 $(TARGET): dependencies
-	@echo "Building Java codesample for OnFleet Homework..."
+	@echo "Building Java codesample for ONF Homework..."
 	@mvn clean $(GOAL) $(MVN_OPTS)
 
 $(LOCAL_ENV): $(LOCAL_ENV)/names/surnames.txt $(LOCAL_ENV)/names/firstnames.txt $(LOCAL_ENV)/geo/bounds.json
