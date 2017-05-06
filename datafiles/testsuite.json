@@ -1,7 +1,7 @@
 {
   "tasks": [
     {"uuid": "9f9b2efd-2663-4c69-90e0-006b2dd3c631", "location": {"uuid": "01255ee2-2c30-42a7-85e6-f84d95e0b7da", "label": "AT&T Park", "geopoint": {"latitude": -122.6941400, "longitude": 37.7272391}}},
-    {"uuid": "7e7b5490-f942-4781-9158-82ad47814045", "location": {"uuid": "382f8057-6c43-4702-aa35-b20ee73888e4", "label": "OnFleet HQ", "geopoint": {"latitude": -122.408394, "longitude": 37.783657}}},
+    {"uuid": "7e7b5490-f942-4781-9158-82ad47814045", "location": {"uuid": "382f8057-6c43-4702-aa35-b20ee73888e4", "label": "ONF HQ", "geopoint": {"latitude": -122.408394, "longitude": 37.783657}}},
     {"uuid": "22eb3260-5bd0-426c-b06f-4ac4321ada98", "location": {"uuid": "a6900770-2311-4f44-bd88-568690d7595b", "label": "US Capitol", "geopoint": {"latitude": -77.00592, "longitude": 38.889812}}},
     {"uuid": "3dc36338-b56a-404f-9c99-b563229e6eb3", "location": {"uuid": "64bb15b7-1ee4-45d8-8c6c-fc0374577535", "label": "CA Capitol", "geopoint": {"latitude": -121.494995, "longitude": 38.576763}}},
     {"uuid": "bb6ed987-4896-4766-9204-bbd721b454ba", "location": {"uuid": "b8a185d6-ca11-4cbc-bd0b-8e31520d4d78", "label": "Apple Store (Union Square)", "geopoint": {"latitude": -122.40636, "longitude": 37.78856}}},
